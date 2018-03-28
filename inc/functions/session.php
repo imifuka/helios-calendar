@@ -8,7 +8,7 @@
 	header("X-Frame-Options: SAMEORIGIN");
 	
 	include_once(HCPATH.'/inc/cl_session.php');
-	$session = new cl_session($hc_session_settings = array(
+	$session = new ChristopherL\Session($hc_session_settings = array(
 			'name'      =>  $hc_cfg[201],
 			'hash'			=>	1,
 			'path'			=>	'/',
