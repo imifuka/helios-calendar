@@ -18,12 +18,12 @@
 	include_once(HCPATH . HCINC . '/functions/shared.php');
 	include_once(HCADMIN . HCINC . '/functions/admin.php');
 	
-	if(file_exists(HCPATH.'/setup')){
-		echo 'Setup directory still present. Please delete it.';
-		exit();}
+	// TODO: Uncomment this when development is done.
+	// if(file_exists(HCPATH.'/setup')){
+	// 	echo 'Setup directory still present. Please delete it.';
+	// 	exit();}
 	
-	$dbc = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-	mysql_select_db(DB_NAME,$dbc);
+	$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 	
 	buildCache(6);
 	buildCache(0);
@@ -33,7 +33,7 @@
 	header("X-Frame-Options: SAMEORIGIN");
 	
 	include_once(HCPATH.'/inc/cl_session.php');
-	$session_a = new cl_session($hc_session_settings = array(
+	$session_a = new ChristopherL\Session($hc_session_settings = array(
 			'name'      =>  $hc_cfg[200],
 			'hash'			=>	1,
 			'path'			=>	'/',
