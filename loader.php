@@ -15,7 +15,7 @@
 	include_once(HCPATH . HCINC . '/functions/users.php');
 	include_once(HCPATH . HCINC . '/functions/shared.php');
 	
-	$dbc = mysql_connect(DB_HOST, DB_USER, DB_PASS);
+	$dbc = mysql_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 	mysql_select_db(DB_NAME,$dbc);
 	
 	buildCache(6);

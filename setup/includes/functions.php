@@ -35,10 +35,10 @@
 		return ($version != '' && $version < '5.2') ? true : false;
 	}
 	function mysql_current($version){
-		return ($version != '' && $version >= '5.5') ? true : false;
+		return ($version != '' && $version >= '50500') ? true : false;
 	}
 	function mysql_abort($version){
-		return ($version != '' && $version < '5.0') ? true : false;
+		return ($version != '' && $version < '50000') ? true : false;
 	}
 	function progress(){
 		global $sID;

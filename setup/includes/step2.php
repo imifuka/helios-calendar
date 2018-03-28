@@ -51,17 +51,19 @@
 			$apc_class = 'ok';}
 			
 		try {
-			$dbc = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-			mysql_select_db(DB_NAME,$dbc);
-			
-			$result = mysql_query("SELECT VERSION();");
-			if(mysql_result($result,0,0) != '')
-				$mysql_ver = $_SESSION['mysql_version'] = mysql_result($result,0,0);
-			if(!mysql_abort(mysql_result($result,0,0))){
+			$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+			// if ($mysqli->connect_errno) {
+			// 	printf("Connect failed: %s\n", $mysqli->connect_error);
+			// }
+
+			$mysql_ver = $_SESSION['mysql_version'] = $dbc->server_info;
+			if(!mysql_abort($dbc->server_version)) {
 				++$pass;
-				$mysql_class = 'ok';}
-			if($mysql_class == 'ok' && !mysql_current(mysql_result($result,0,0))){
-				$mysql_class = 'old';}				
+				$mysql_class = 'ok';
+			}
+			if($mysql_class == 'ok' && !mysql_current($dbc->server_version)) {
+				$mysql_class = 'old';
+			}
 		} catch(Exception $e) {$mysql_ver = 'Unknown';}
 		
 		if(defined("DB_HOST") && DB_HOST != ''){
@@ -112,12 +114,12 @@
 			$rnd_class = 'ok';}
 			
 		try {
-			$dbc = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-			mysql_select_db(DB_NAME,$dbc);
+			$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 			
-			$result = mysql_query("SELECT NOW();");
-			if(mysql_result($result,0,0) != ''){
-				$mysql_stamp = mysql_result($result,0,0);
+			$result = $dbc->query("SELECT NOW();");
+			$stamp = $result->fetch_row();
+			if($stamp){
+				$mysql_stamp = $stamp[0];
 				$mys_class = 'ok';
 				++$pass;}
 		} catch(Exception $e) {}
