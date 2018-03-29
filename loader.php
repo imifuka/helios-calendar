@@ -15,9 +15,6 @@
 	include_once(HCPATH . HCINC . '/functions/users.php');
 	include_once(HCPATH . HCINC . '/functions/shared.php');
 	
-	$dbc = mysql_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-	mysql_select_db(DB_NAME,$dbc);
-	
 	buildCache(6);
 	buildCache(0);
 	buildCache(1);
@@ -137,7 +134,7 @@
 						ORDER BY StartDate");
 				if(hasRows($result)){
 					define('HCCanURL',CalRoot.'/index.php?com=series&sID='.$sID);
-					$crmbAdd[HCCanURL] = $hc_lang_core['Series'].' '.mysql_result($result,0,0);}
+					$crmbAdd[HCCanURL] = $hc_lang_core['Series'].' '.$result->fetch_row()[0];}
 				include_once(HCLANG . '/public/event.php');
 				include_once(HCPATH . HCINC . '/functions/events.php');
 				include_once(HCPATH . HCINC . '/functions/maps.php');
@@ -158,13 +155,13 @@
 					if(hasRows($result)){
 						define('HCCanURL',CalRoot.'/index.php?com='.HCCOM.'&amp;lID='.$lID);
 						$crmbAdd[CalRoot.'/index.php?com=location'] = $hc_lang_core['location'];
-						$crmbAdd[CalRoot.'/index.php?com=location&amp;lID='.$lID] = mysql_result($result,0,0);
+						$crmbAdd[CalRoot.'/index.php?com=location&amp;lID='.$lID] = $result->fetch_row()[0];
 						$crmbAdd[HCCanURL] = $hc_lang_core[HCCOM];}
 				} elseif($eID > 0) {
 					$result = doQuery("SELECT Title, StartDate, StartTime, TBD FROM " . HC_TblPrefix . "events WHERE PkID = '" . $eID . "'".(($hc_cfg[126] == 0) ? " AND StartDate >= '" . SYSDATE . "'" : ""));
 					if(hasRows($result)){
 						define('HCCanURL',CalRoot.'/index.php?com='.HCCOM.'&amp;eID='.$eID);
-						$crmbAdd[CalRoot.'/index.php?eID='.$eID] = mysql_result($result,0,0);
+						$crmbAdd[CalRoot.'/index.php?eID='.$eID] = $result->fetch_row()[0];
 						$crmbAdd[HCCanURL] = $hc_lang_core[HCCOM];}
 				}
 				$title = cOut(mysql_result($result,0,0));

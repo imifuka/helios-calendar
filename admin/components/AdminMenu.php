@@ -6,18 +6,37 @@
 	if(!defined('hcAdmin')){header("HTTP/1.1 403 No Direct Access");exit();}
 	
 	$result = doQuery("SELECT * FROM " . HC_TblPrefix . "adminpermissions WHERE AdminID = '" . cIn($_SESSION['AdminPkID']) . "' and IsActive = 1");
+	$columns = array(
+		"PkID" => 0,
+		"EventEdit" => 1,
+		"EventPending" => 2,
+		"EventCategory" => 3,
+		"UserEdit" => 4,
+		"AdminEdit" => 5,
+		"Newsletter" => 6,
+		"Settings" => 7,
+		"Tools" => 8,
+		"Reports" => 9,
+		"Locations" => 10,
+		"Comments" => 11,
+		"Pages" => 12,
+		"AdminID" => 13,
+		"IsActive" => 14
+	);
+		
 	if(hasRows($result)){
-		$adminEventEdit = mysql_result($result,0,"EventEdit");
-		$adminEventPending = mysql_result($result,0,"EventPending");
-		$adminEventCategory = mysql_result($result,0,"EventCategory");
-		$adminUserEdit = mysql_result($result,0,"UserEdit");
-		$adminAdminEdit = mysql_result($result,0,"AdminEdit");
-		$adminNewsletter = mysql_result($result,0,"Newsletter");
-		$adminSettings = mysql_result($result,0,"Settings");
-		$adminTools = mysql_result($result,0,"Tools");
-		$adminReports = mysql_result($result,0,"Reports");
-		$adminLocations = mysql_result($result,0,"Locations");
-		$adminPages = mysql_result($result,0,"Pages");
+		$row = $result->fetch_row();
+		$adminEventEdit = $row[$columns["EventEdit"]];
+		$adminEventPending = $row[$columns["EventPending"]];
+		$adminEventCategory = $row[$columns["EventCategory"]];
+		$adminUserEdit = $row[$columns["UserEdit"]];
+		$adminAdminEdit = $row[$columns["AdminEdit"]];
+		$adminNewsletter = $row[$columns["Newsletter"]];
+		$adminSettings = $row[$columns["Settings"]];
+		$adminTools = $row[$columns["Tools"]];
+		$adminReports = $row[$columns["Reports"]];
+		$adminLocations = $row[$columns["Locations"]];
+		$adminPages = $row[$columns["Pages"]];
 		
 		$_SESSION['APIAuth'] = $adminSettings;
 		

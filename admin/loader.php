@@ -23,8 +23,6 @@
 	// 	echo 'Setup directory still present. Please delete it.';
 	// 	exit();}
 	
-	$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-	
 	buildCache(6);
 	buildCache(0);
 	buildCache(3);
@@ -39,6 +37,8 @@
 			'path'			=>	'/',
 			'decoy'     =>  true));
 	$session_a->start();
+	// session_name($hc_cfg[200]);
+	// session_start();
 	
 	if(!isset($_SESSION['LangSet']))
 		$_SESSION['LangSet'] = $hc_cfg[28];
