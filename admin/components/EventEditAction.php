@@ -141,7 +141,7 @@
 		$efNew = true;
 		$resultD = doQuery("SELECT * FROM " . HC_TblPrefix . "eventnetwork WHERE EventID = '" . cIn($eventIDs[$i]) . "'");
 		if(hasRows($resultD)){
-			while($row = mysql_fetch_row($resultD)){
+			while($row = $resultD->fetch_row()){
 				switch($row[2]){
 					case 1:
 						$efNew = false;
@@ -165,7 +165,7 @@
 		if(isset($_POST['doEventbrite']) || isset($_POST['doFacebook'])){
 			$result = doQuery("SELECT StartDate FROM " . HC_TblPrefix . "events WHERE PkID = '" . cIn($eventIDs[$i]) . "'");
 			if(hasRows($result)){
-				$eventDate = mysql_result($result,0,0);
+				$eventDate = $result->fetch_row()[0];
 				
 				if(isset($_POST['doFacebook']) && isset($_POST['facebookEvent'])){
 					$fbNew = ($fbID == '') ? true : false;
@@ -174,13 +174,24 @@
 					$fbEventID = $eventIDs[$i];
 					if(!isset($name) || $name == ''){
 						$resultL = doQuery("SELECT Name, Address, Address2, City, State, Zip, Country FROM " . HC_TblPrefix . "locations WHERE PkID = '" . cIn($locID) . "'");
-						$name = (hasRows($resultL)) ? mysql_result($resultL,0,0) : $locName;
-						$add = (hasRows($resultL)) ? mysql_result($resultL,0,1) : $locAddress;
-						$add2 = (hasRows($resultL)) ? mysql_result($resultL,0,2) : $locAddress2;
-						$city = (hasRows($resultL)) ? mysql_result($resultL,0,3) : $locCity;
-						$region = (hasRows($resultL)) ? mysql_result($resultL,0,4) : $locState;
-						$postal = (hasRows($resultL)) ? mysql_result($resultL,0,5) : $locZip;
-						$country = (hasRows($resultL)) ? mysql_result($resultL,0,6) : $locCountry;
+						if (hasRows($resultL)) {
+							$locData = $resultL->fetch_row();
+							$name = $locData[0];
+							$add = $locData[1];
+							$add2 = $locData[2];
+							$city = $locData[3];
+							$region = $locData[4];
+							$postal = $locData[5];
+							$country = $locData[6];
+						} else {
+							$name = $locName;
+							$add = $locAddress;
+							$add2 = $locAddress2;
+							$city = $locCity;
+							$region = $locState;
+							$postal = $locZip;
+							$country = $locCountry;
+						}
 					}
 
 					include(HCPATH.HCINC.'/api/facebook/EventEdit.php');
@@ -233,10 +244,10 @@
 		
 		$result = doQuery("SELECT SettingValue FROM " . HC_TblPrefix . "settings WHERE PkID IN(46,47,111,112)");
 		if(hasRows($result)){
-			$oauth_token = mysql_result($result,0,0);
-			$oauth_secret = mysql_result($result,1,0);
-			$consumer_key = mysql_result($result,2,0);
-			$consumer_secret = mysql_result($result,3,0);
+			$oauth_token = $result->fetch_row()[0];
+			$oauth_secret = $result->fetch_row()[0];
+			$consumer_key = $result->fetch_row()[0];
+			$consumer_secret = $result->fetch_row()[0];
 		} else {
 			$apiFail = true;
 			echo $hc_lang_event['APITwitterSettings'];
