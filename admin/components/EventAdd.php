@@ -37,47 +37,48 @@
 							LEFT JOIN " . HC_TblPrefix . "eventrsvps er ON (er.EventID = e.PkID)
 						WHERE e.PkID = '" . $eID . "' AND e.IsActive = 1");
 		if(hasRows($result)){
-			$eventStatus = cOut(mysql_result($result,0,17));
-			$eventTitle = cOut(mysql_result($result,0,1));
-			$eventDesc = cOut(mysql_result($result,0,8));
-			$tbd = cOut(mysql_result($result,0,11));
-			$eventDate = stampToDate(mysql_result($result,0,9), $hc_cfg[24]);
-			$contactName = cOut(mysql_result($result,0,13));
-			$contactEmail = cOut(mysql_result($result,0,14));
-			$contactPhone = cOut(mysql_result($result,0,15));
-			$eventBillboard = cOut(mysql_result($result,0,18));
-			$contactURL = (mysql_result($result,0,24) != '') ? cOut(mysql_result($result,0,24)) : '';
-			$views = cOut(mysql_result($result,0,26));
-			$imageURL = cOut(mysql_result($result,0,38));
-			$featured = cOut(mysql_result($result,0,40));
-			$expire = (mysql_result($result,0,41) > 0) ? cOut(mysql_result($result,0,41)) : $hc_cfg[134];
-			$locID = cOut(mysql_result($result,0,33));
-			$locName = ($locID == 0) ? cOut(mysql_result($result,0,2)) : cOut(mysql_result($result,0,43));
-			$locAddress = ($locID == 0) ? cOut(mysql_result($result,0,3)) : cOut(mysql_result($result,0,44));
-			$locAddress2 = ($locID == 0) ? cOut(mysql_result($result,0,4)) : cOut(mysql_result($result,0,45));
-			$locCity = ($locID == 0) ? cOut(mysql_result($result,0,5)) : cOut(mysql_result($result,0,46));
-			$state = ($locID == 0) ? cOut(mysql_result($result,0,6)) : cOut(mysql_result($result,0,47));
-			$locPostal = ($locID == 0) ? cOut(mysql_result($result,0,7)) : cOut(mysql_result($result,0,48));
-			$locCountry = ($locID == 0) ? cOut(mysql_result($result,0,35)) : cOut(mysql_result($result,0,49));
-			$cost = cOut(mysql_result($result,0,34));
-			$rsvp_type = cOut(mysql_result($result,0,51));
-			$rsvp_space = cOut(mysql_result($result,0,55));
-			$rsvp_disp = cOut(mysql_result($result,0,56));
-			$rsvp_notice = cOut(mysql_result($result,0,57));
-			$rsvp_open = stampToDate(mysql_result($result,0,53), $hc_cfg[24]);
-			$rsvp_close = stampToDate(mysql_result($result,0,54), $hc_cfg[24]);
+			$eventData = $result->fetch_row()[0];
+			$eventStatus = cOut($eventData[17]);
+			$eventTitle = cOut($eventData[1]);
+			$eventDesc = cOut($eventData[8]);
+			$tbd = cOut($eventData[11]);
+			$eventDate = stampToDate($eventData[9], $hc_cfg[24]);
+			$contactName = cOut($eventData[13]);
+			$contactEmail = cOut($eventData[14]);
+			$contactPhone = cOut($eventData[15]);
+			$eventBillboard = cOut($eventData[18]);
+			$contactURL = ($eventData[24] != '') ? cOut($eventData[24]) : '';
+			$views = cOut($eventData[26]);
+			$imageURL = cOut($eventData[38]);
+			$featured = cOut($eventData[40]);
+			$expire = ($eventData[41] > 0) ? cOut($eventData[41]) : $hc_cfg[134];
+			$locID = cOut($eventData[33]);
+			$locName = ($locID == 0) ? cOut($eventData[2]) : cOut($eventData[43]);
+			$locAddress = ($locID == 0) ? cOut($eventData[3]) : cOut($eventData[44]);
+			$locAddress2 = ($locID == 0) ? cOut($eventData[4]) : cOut($eventData[45]);
+			$locCity = ($locID == 0) ? cOut($eventData[5]) : cOut($eventData[46]);
+			$state = ($locID == 0) ? cOut($eventData[6]) : cOut($eventData[47]);
+			$locPostal = ($locID == 0) ? cOut($eventData[7]) : cOut($eventData[48]);
+			$locCountry = ($locID == 0) ? cOut($eventData[35]) : cOut($eventData[49]);
+			$cost = cOut($eventData[34]);
+			$rsvp_type = cOut($eventData[51]);
+			$rsvp_space = cOut($eventData[55]);
+			$rsvp_disp = cOut($eventData[56]);
+			$rsvp_notice = cOut($eventData[57]);
+			$rsvp_open = stampToDate($eventData[53], $hc_cfg[24]);
+			$rsvp_close = stampToDate($eventData[54], $hc_cfg[24]);
 			
 			if($tbd == 0){
-				$startTimeHour = date($hc_time['format'], strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,10)));
-				$startTimeMins = date("i", strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,10)));
-				$startTimeAMPM = date("A", strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,10)));
-				if(mysql_result($result,0,12) != ''){
-					$endTimeHour = date($hc_time['format'], strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,12)));
-					$endTimeMins = date("i", strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,12)));
-					$endTimeAMPM = date("A", strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,12)));
+				$startTimeHour = date($hc_time['format'], strtotime($eventData[9].' '.$eventData[10]));
+				$startTimeMins = date("i", strtotime($eventData[9].' '.$eventData[10]));
+				$startTimeAMPM = date("A", strtotime($eventData[9].' '.$eventData[10]));
+				if($eventData[12] != ''){
+					$endTimeHour = date($hc_time['format'], strtotime($eventData[9].' '.$eventData[12]));
+					$endTimeMins = date("i", strtotime($eventData[9].' '.$eventData[12]));
+					$endTimeAMPM = date("A", strtotime($eventData[9].' '.$eventData[12]));
 				} else {
-					$endTimeHour = date($hc_time['format'], strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,10).' +1 hour'));
-					$endTimeAMPM = date("A", strtotime(mysql_result($result,0,9).' '.mysql_result($result,0,10).' +1 hour'));
+					$endTimeHour = date($hc_time['format'], strtotime($eventData[9].' '.$eventData[10].' +1 hour'));
+					$endTimeAMPM = date("A", strtotime($eventData[9].' '.$eventData[10].' +1 hour'));
 					$noEndTime = 1;
 				}
 			}
@@ -362,13 +363,14 @@
 	</fieldset>';
 			
 	$result = doQuery("SELECT * FROM " . HC_TblPrefix . "settings WHERE PkID IN(5,6,46,47,57,58,120,123)");
-	$goEventbrite = (mysql_result($result,0,1) != '' && mysql_result($result,1,1) != '') ? 1 : 0;
-	$goTwitter = (mysql_result($result,2,1) != '' && mysql_result($result,3,1) != '') ? 1 : 0;
-	$goBitly = (mysql_result($result,4,1) != '' && mysql_result($result,5,1) != '') ? 1 : 0;
+	$thirdPartySettings = $result->fetch_all();
+	$goEventbrite = ($thirdPartySettings[0][1] != '' && $thirdPartySettings[1][1] != '') ? 1 : 0;
+	$goTwitter = ($thirdPartySettings[2][1] != '' && $thirdPartySettings[3][1] != '') ? 1 : 0;
+	$goBitly = ($thirdPartySettings[4][1] != '' && $thirdPartySettings[5][1] != '') ? 1 : 0;
 	$ebOrganziers = ($goEventbrite == 1) ? eventbrite_get_organizers() : array();
 	$goPaypal = ($goEventbrite == 1 && $hc_cfg[103] != '') ? 1 : 0;
 	$goGoogleC = ($goEventbrite == 1 && $hc_cfg[104] != '' && $hc_cfg[105] != '') ? 1 : 0;
-	$goFacebook = (mysql_result($result,6,1) != '' && mysql_result($result,7,1) != '') ? 1 : 0;
+	$goFacebook = ($thirdPartySettings[6][1] != '' && $thirdPartySettings[7][1] != '') ? 1 : 0;
 		
 	echo '	
 	<fieldset>

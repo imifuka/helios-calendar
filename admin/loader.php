@@ -37,8 +37,6 @@
 			'path'			=>	'/',
 			'decoy'     =>  true));
 	$session_a->start();
-	// session_name($hc_cfg[200]);
-	// session_start();
 	
 	if(!isset($_SESSION['LangSet']))
 		$_SESSION['LangSet'] = $hc_cfg[28];

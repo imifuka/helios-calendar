@@ -5,8 +5,9 @@
  */
 	error_reporting(0);
 	if(!defined('hcAdmin')){header("HTTP/1.1 403 No Direct Access");exit();}
-	
-	$result = doQuery("SELECT SettingValue FROM " . HC_TblPrefix . "settings WHERE PkID IN(16,17,18,19) ORDER BY PkID");
+
+	// TODO: $result appears to be not in use. If this breaks, uncomment the line.
+	// $result = doQuery("SELECT SettingValue FROM " . HC_TblPrefix . "settings WHERE PkID IN(16,17,18,19) ORDER BY PkID");
 	$resultV = doQuery("SELECT VERSION()");
 	$load = array();
 	if(function_exists('exec')){
@@ -34,7 +35,7 @@
 			<label><b>PHP Version:</b></label>
 			<span>'.phpversion().' (<a href="'.AdminRoot.'/components/AboutPHP.php" target="_blank">About PHP</a>)</span>
 			<label><b>MySQL Version:</b></label>
-			<span>'.mysql_result($resultV,0,0).'</span>
+			<span>'.$resultV->fetch_row()[0].'</span>
 			'.((isset($load[1]) && $load[1] != '') ? '<label><b>Load Average:</b></label>
 			<span>'.$load[1].'</span>':'').'
 			<label><b>SSL Support:</b></label>
